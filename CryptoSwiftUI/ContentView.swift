@@ -8,14 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject var cyrptoListViewModel: CryptoListViewModel
+    
+    init () {
+        self.cyrptoListViewModel = CryptoListViewModel()
+    }
+    
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        
+        NavigationView {
+            VStack {
+                List(cyrptoListViewModel.cryptoList,id: \.id) { crypto in
+                    Text(crypto.currency)
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.brown)
+                        .bold()
+                    Text(crypto.price)
+                        .font(.callout)
+                }
+            }.navigationTitle("Crypto List")
+                .navigationBarTitleDisplayMode(.automatic)
+        }.task {
+            await cyrptoListViewModel.downloadCryptoAsync(url: URL(string:"https://raw.githubusercontent.com/atilsamancioglu/K21-JSONDataSet/master/crypto.json")!)
         }
-        .padding()
+        
+      
+        
     }
 }
 
