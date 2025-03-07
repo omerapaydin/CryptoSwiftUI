@@ -6,3 +6,15 @@
 //
 
 import Foundation
+
+struct CyrptoCurrency: Decodable, Identifiable {
+    var id = UUID()
+    let currency : String
+    let price : String
+    
+    private enum CodingKeys : String, CodingKey {
+        case currency = "currency"
+        case price = "price"
+    }
+    
+}
